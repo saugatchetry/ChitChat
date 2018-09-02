@@ -1,11 +1,14 @@
 package saugatchetry.com.chitchat;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -43,6 +46,7 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.d("GroupFragments","On Create Called");
         groupFragmentView =  inflater.inflate(R.layout.fragment_groups, container, false);
 
         rootReference = FirebaseDatabase.getInstance().getReference().child("Groups");
@@ -51,7 +55,22 @@ public class GroupsFragment extends Fragment {
 
         getGroupNamesFromBackend();
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String currentGroupNameClicked = adapterView.getItemAtPosition(position).toString();
+                redirectToGroupChat(currentGroupNameClicked);
+            }
+        });
+
         return groupFragmentView;
+    }
+
+    private void redirectToGroupChat(String currentGroupNameClicked) {
+
+        Intent groupChatIntent = new Intent(getContext(),GroupChatActivity.class);
+        groupChatIntent.putExtra("groupName",currentGroupNameClicked);
+        startActivity(groupChatIntent);
     }
 
     private void getGroupNamesFromBackend() {
@@ -69,6 +88,7 @@ public class GroupsFragment extends Fragment {
 
                 groupList.clear();
                 groupList.addAll(set);
+                Log.d("GroupFragments",""+groupList.size());
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -84,6 +104,8 @@ public class GroupsFragment extends Fragment {
         listView = (ListView) groupFragmentView.findViewById(R.id.list_view);
         arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, groupList);
         listView.setAdapter(arrayAdapter);
+
+
     }
 
 }
