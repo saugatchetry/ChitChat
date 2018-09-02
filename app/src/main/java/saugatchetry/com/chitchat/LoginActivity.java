@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseUser currentUser;
+
     private FirebaseAuth firebaseAuth;
 
     private Button loginButton, phoneLoginButton;
@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        currentUser = firebaseAuth.getCurrentUser();
+
 
         initializeUIComponents();
 
@@ -105,18 +105,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if(currentUser != null){
-            redirectToMainActivity();
-        }
-    }
-
-    private void redirectToMainActivity() {
-        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-        startActivity(intent);
+    private void redirectToMainActivity(){
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
 
     private void redirectToRegisterActivity() {
