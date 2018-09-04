@@ -54,6 +54,13 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser();
             }
         });
+
+        phoneLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                redirectToPhoneLoginActivity();
+            }
+        });
     }
 
     private void loginUser() {
@@ -110,6 +117,13 @@ public class LoginActivity extends AppCompatActivity {
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
         finish();
+    }
+
+    private void redirectToPhoneLoginActivity(){
+        Intent phoneLoginIntent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
+        //phoneLoginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(phoneLoginIntent);
+        //finish();
     }
 
     private void redirectToRegisterActivity() {
